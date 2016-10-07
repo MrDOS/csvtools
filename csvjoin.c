@@ -11,8 +11,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "writebuf.h"
 
-#define BUF_SIZE 8000
+#define BUF_SIZE 8096
 
 #define IN_SPLIT '\x1E'
 #define IN_DELIM '\x1F'
@@ -21,60 +22,71 @@
 #define OUT_DELIM ','
 #define OUT_QUOTE '"'
 
-char buf[BUF_SIZE + 1] = {'\0'};
-size_t buf_pos = 0;
+WriteBuf *buf;
+
+char field_buf[BUF_SIZE + 1] = {'\0'};
+size_t field_buf_pos = 0;
 
 bool quoted = false;
 
-void flush(char separator)
+void terminate_field(char separator)
 {
     if (quoted)
     {
-        putc(OUT_QUOTE, stdout);
+        WriteBuf_writec(buf, OUT_QUOTE);
     }
 
-    fwrite(buf, buf_pos, 1, stdout);
+    WriteBuf_write(buf, field_buf, field_buf_pos);
 
     if (quoted)
     {
-        putc(OUT_QUOTE, stdout);
+        WriteBuf_writec(buf, OUT_QUOTE);
     }
 
-    putc(separator, stdout);
+    WriteBuf_writec(buf, separator);
 
-    buf_pos = 0;
+    field_buf_pos = 0;
     quoted = false;
 }
 
 int main()
 {
+    WriteBuf_new(&buf, stdout);
+
     int in;
     while ((in = getc(stdin)) != EOF)
     {
-        if (in == OUT_DELIM)
+        if (in == OUT_SPLIT || in == OUT_DELIM)
         {
             quoted = true;
-            buf[buf_pos++] = in;
+            field_buf[field_buf_pos++] = in;
         }
         else if (in == OUT_QUOTE)
         {
             quoted = true;
-            buf[buf_pos++] = in;
-            buf[buf_pos++] = in;
+            field_buf[field_buf_pos++] = in;
+            field_buf[field_buf_pos++] = in;
         }
         else if (in == IN_SPLIT)
         {
-            flush(OUT_SPLIT);
+            terminate_field(OUT_SPLIT);
         }
         else if (in == IN_DELIM)
         {
-            flush(OUT_DELIM);
+            terminate_field(OUT_DELIM);
         }
         else
         {
-            buf[buf_pos++] = in;
+            field_buf[field_buf_pos++] = in;
         }
     }
+
+    if (field_buf_pos > 0)
+    {
+        terminate_field(OUT_SPLIT);
+    }
+
+    WriteBuf_close(&buf);
 
     return EXIT_SUCCESS;
 }

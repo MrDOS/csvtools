@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "writebuf.h"
 
 #define IN_SPLIT '\n'
 #define IN_DELIM ','
@@ -25,8 +26,11 @@ typedef enum
     STATE_QUOTE_MAYBE_ESCAPE
 } ParseState;
 
-int main(int argc, char *argv[])
+int main()
 {
+    WriteBuf *buf;
+    WriteBuf_new(&buf, stdout);
+
     ParseState state = STATE_NORMAL;
 
     int in;
@@ -41,13 +45,13 @@ int main(int argc, char *argv[])
             }
             else
             {
-                putc(in, stdout);
+                WriteBuf_writec(buf, in);
             }
             break;
         case STATE_QUOTE_MAYBE_ESCAPE:
             if (in == IN_QUOTE)
             {
-                putc(in, stdout);
+                WriteBuf_writec(buf, in);
                 state = STATE_QUOTED;
             }
             else
@@ -58,11 +62,11 @@ int main(int argc, char *argv[])
         default:
             if (in == IN_SPLIT)
             {
-                putc(OUT_SPLIT, stdout);
+                WriteBuf_writec(buf, OUT_SPLIT);
             }
             else if (in == IN_DELIM)
             {
-                putc(OUT_DELIM, stdout);
+                WriteBuf_writec(buf, OUT_DELIM);
             }
             else if (in == IN_QUOTE)
             {
@@ -70,10 +74,12 @@ int main(int argc, char *argv[])
             }
             else
             {
-                putc(in, stdout);
+                WriteBuf_writec(buf, in);
             }
         }
     }
+
+    WriteBuf_close(&buf);
 
     return EXIT_SUCCESS;
 }
