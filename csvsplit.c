@@ -23,7 +23,8 @@ typedef enum
 {
     STATE_NORMAL,
     STATE_QUOTED,
-    STATE_QUOTE_MAYBE_ESCAPE
+    STATE_QUOTE_MAYBE_ESCAPE,
+    STATE_JUST_SPLIT
 } ParseState;
 
 int main()
@@ -62,11 +63,16 @@ int main()
         default:
             if (in == IN_SPLIT)
             {
-                WriteBuf_writec(buf, OUT_SPLIT);
+                if (state != STATE_JUST_SPLIT)
+                {
+                    WriteBuf_writec(buf, OUT_SPLIT);
+                    state = STATE_JUST_SPLIT;
+                }
             }
             else if (in == IN_DELIM)
             {
                 WriteBuf_writec(buf, OUT_DELIM);
+                state = STATE_NORMAL;
             }
             else if (in == IN_QUOTE)
             {
@@ -75,6 +81,7 @@ int main()
             else
             {
                 WriteBuf_writec(buf, in);
+                state = STATE_NORMAL;
             }
         }
     }
