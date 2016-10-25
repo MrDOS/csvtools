@@ -1,20 +1,4 @@
 #! /bin/sh
 
-if [ $# -lt 1 ]
-then
-    echo "Usage: $0 [ 'prog' | -f progfile ]" 1>&2
-    exit 1
-fi
-
-flag=""
-if [ "$1" = "-f" ]
-then
-    flag="$1"
-    shift
-fi
-prog="$1"
-
-csvsplit \
-    | awk -v RS=$'\x1E' -v FS=$'\x1F' -v ORS=$'\x1E' -v OFS=$'\x1F' \
-          $flag "$prog" \
+cawkin -v ORS=$'\x1E' -v OFS=$'\x1F' "$@" \
     | csvjoin
