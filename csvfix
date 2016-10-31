@@ -1,0 +1,9 @@
+#! /bin/sh
+
+# Fix Excel for Mac CSV files: convert from MacRoman to UTF-8 and normalize <CR>
+# and <CR><LF> line endings to <LF>.
+
+iconv -f mac -t utf8 \
+    | perl -pe 's/\r\n/\n/g' \
+    | perl -pe 's/\r/\n/g' \
+    | sed -e 's/$//'
