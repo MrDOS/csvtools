@@ -45,7 +45,13 @@ the shebang of an executable awk program (i.e., `#! /usr/bin/env cawk -f`).
 
 ## Building
 
-    $ cc -Wall -Wextra -pedantic -Os -o csvsplit csvsplit.c writebuf.c
-    $ cc -Wall -Wextra -pedantic -Os -o csvsplit csvjoin.c writebuf.c
+To compile `csvsplit(1)` and `csvjoin(1)`:
 
-Todo: this really deserves a makefile.
+    $ make
+
+This should work just about anywhere you can find a C compiler.
+
+If you'd like to compile for development (with warnings and debug symbols), the
+`debug` target has your back:
+
+    $ make debug
