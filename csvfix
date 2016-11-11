@@ -6,4 +6,4 @@
 iconv -f mac -t utf8 \
     | perl -pe 's/\r\n/\n/g' \
     | perl -pe 's/\r/\n/g' \
-    | sed -e 's/$//'
+    | sed -e '$a\'
