@@ -1,0 +1,2 @@
+Excel for Mac outputs broken CSV files (wrong line endings, MacRoman character
+set). `csvfix` can fix this automatically.

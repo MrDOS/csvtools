@@ -1,0 +1,2 @@
+A trailing newline should be present at the end of output to maintain
+compatibility with Gnu/Unix utilities which expect one.

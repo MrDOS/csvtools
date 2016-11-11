@@ -1,0 +1,2 @@
+Blank lines in the input – really blank, with no field separators or quoting –
+can be removed from the output.

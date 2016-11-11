@@ -5,3 +5,4 @@ pipelines:
         - step:
             script:
                 - make debug
+                - make test

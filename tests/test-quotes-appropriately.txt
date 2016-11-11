@@ -1,0 +1,2 @@
+Fields only need to be quoted if they contain a comma, a double quotation mark,
+or a newline character.
