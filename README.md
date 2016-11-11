@@ -43,6 +43,16 @@ Both of these wrappers accept typical awk arguments (e.g., accepting a program
 given as an argument or using `-f` to point at a program file) or can be used as
 the shebang of an executable awk program (i.e., `#! /usr/bin/env cawk -f`).
 
+### `csvfix`
+
+Excel for Mac provides two CSV output formats, both of them terrible. The tl;dr
+is that the “CSV UTF-8 (Comma delimited)” format eats your data (no, really, the
+output can be complete garbage) and should never, ever be used. Save your data
+as “Comma Separated Values (.csv)” then run it through `csvfix` to fix the
+encoding and line endings.
+
+Requires `iconv(1)`, `perl`, and `sed`.
+
 ## Building
 
 To compile `csvsplit(1)` and `csvjoin(1)`:
