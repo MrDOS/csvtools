@@ -4,9 +4,13 @@ debug: CFLAGS := -Wall -Wextra -Werror -pedantic -std=gnu99 -g
 all: csvsplit csvjoin
 debug: csvsplit csvjoin
 
-csvsplit: csvsplit.o writebuf.o
-csvjoin: csvjoin.o writebuf.o
+%: obj/%.o obj/writebuf.o
+	$(CC) $^ -o $@
+
+obj/%.o: src/%.c
+	mkdir -p obj
+	$(CC) -c $(CFLAGS) $< -o $@
 
 .PHONY: clean
 clean:
-	-rm *.o csvsplit csvjoin
+	-rm csvsplit csvjoin obj/*.o
