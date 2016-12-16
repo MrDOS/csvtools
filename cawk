@@ -1,4 +1,7 @@
 #! /bin/sh
 
-cawkin -v ORS=$'\x1E' -v OFS=$'\x1F' "$@" \
+RECORD=`printf "\036"`
+FIELD=`printf "\037"`
+
+cawkin -v ORS=$RECORD -v OFS=$FIELD "$@" \
     | csvjoin

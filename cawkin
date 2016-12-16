@@ -1,4 +1,7 @@
 #! /bin/sh
 
+RECORD=`printf "\036"`
+FIELD=`printf "\037"`
+
 csvsplit \
-    | awk -v RS=$'\x1E' -v FS=$'\x1F' "$@"
+    | awk -v RS=$RECORD -v FS=$FIELD "$@"
