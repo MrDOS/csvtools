@@ -4,6 +4,5 @@
 # and <CR><LF> line endings to <LF>.
 
 iconv -f mac -t utf8 \
-    | perl -pe 's/\r\n/\n/g' \
-    | perl -pe 's/\r/\n/g' \
+    | perl -pe 's/\r\n?/\n/g' \
     | sed -e '$a\'
