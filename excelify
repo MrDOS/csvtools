@@ -1,0 +1,32 @@
+#! /bin/sh
+
+# Make a UTF-8 CSV suitable for import into Excel by prepending a UTF-8 BOM.
+
+BOM=$'\xEF'$'\xBB'$'\xBF'
+
+if [ $# -ge 1 ]
+then
+    tmp="$(mktemp /tmp/"$(basename "$0")".XXXXXX)"
+
+    # If we've been given filename arguments, modify them in-place.
+    while [ $# -ge 1 ]
+    do
+        filename="$1"
+        shift
+
+        if [ ! -r "$filename" ]
+        then
+            echo "$0: cannot open \"$filename\"!" 1>&2
+            continue
+        fi
+
+        printf "$BOM" \
+            | cat - "$filename" \
+            > "$tmp"
+        mv "$tmp" "$filename"
+    done
+else
+    # Otherwise act as a filter.
+    printf "$BOM"
+    cat -
+fi
