@@ -3,8 +3,13 @@ debug: CFLAGS := -Wall -Wextra -Werror -pedantic -std=gnu99 -g
 
 all: csvsplit csvjoin
 debug: csvsplit csvjoin
-test: test-mac-csv test-quotes-appropriately test-adds-newline \
-      test-retains-newlines test-ignores-blank-lines test-accepts-staggered-rows
+test: test-mac-csv \
+      test-quotes-appropriately \
+      test-quotes-unprintable \
+      test-adds-newline \
+      test-retains-newlines \
+      test-ignores-blank-lines \
+      test-accepts-staggered-rows
 
 %: obj/%.o obj/writebuf.o
 	$(CC) $^ -o $@

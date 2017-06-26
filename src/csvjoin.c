@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "writebuf.h"
 
 #define BUF_SIZE 8096
@@ -56,29 +57,28 @@ int main()
     int in;
     while ((in = getc(stdin)) != EOF)
     {
-        if (in == OUT_SPLIT || in == OUT_DELIM)
+        if (in == IN_SPLIT)
+        {
+            terminate_field(OUT_SPLIT);
+            continue;
+        }
+        else if (in == IN_DELIM)
+        {
+            terminate_field(OUT_DELIM);
+            continue;
+        }
+
+        if (in == OUT_DELIM || iscntrl(in))
         {
             quoted = true;
-            field_buf[field_buf_pos++] = in;
         }
         else if (in == OUT_QUOTE)
         {
             quoted = true;
             field_buf[field_buf_pos++] = in;
-            field_buf[field_buf_pos++] = in;
         }
-        else if (in == IN_SPLIT)
-        {
-            terminate_field(OUT_SPLIT);
-        }
-        else if (in == IN_DELIM)
-        {
-            terminate_field(OUT_DELIM);
-        }
-        else
-        {
-            field_buf[field_buf_pos++] = in;
-        }
+
+        field_buf[field_buf_pos++] = in;
     }
 
     if (field_buf_pos > 0)

@@ -1,6 +1,7 @@
 #! /bin/sh
 
-# Make a UTF-8 CSV suitable for import into Excel by prepending a UTF-8 BOM.
+# Make a UTF-8 CSV suitable for import into Excel by prepending a UTF-8 BOM and
+# replacing newlines within fields with carriage returns.
 
 BOM=$'\xEF'$'\xBB'$'\xBF'
 
@@ -22,11 +23,13 @@ then
 
         printf "$BOM" \
             | cat - "$filename" \
+            | cawk '{gsub(/\r?\n/, "\r"); print;}' \
             > "$tmp"
         mv "$tmp" "$filename"
     done
 else
     # Otherwise act as a filter.
     printf "$BOM"
-    cat -
+    cat - \
+        | cawk '{gsub(/\r?\n/, "\r"); print;}'
 fi
