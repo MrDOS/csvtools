@@ -1,0 +1,5 @@
+1,"This <LF> should be quoted because it's the same as the record separator:
+-"
+2,"This <CR><LF> would be quoted anyway because of the <LF>:
+-"
+3,"This <CR> should be qouted (but doesn't strictly need to be) to keep Excel happy:-"

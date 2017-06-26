@@ -1,0 +1,2 @@
+Fields should also be quoted if they contain any other unprintable characters.
+This typically means carriage returns in the case of Excel-friendly newlines.
