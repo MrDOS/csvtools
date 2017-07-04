@@ -5,6 +5,19 @@
 
 BOM=$'\xEF'$'\xBB'$'\xBF'
 
+FILTER='
+{
+    for (i = 1; i <= NF; i++) {
+        if ($i ~ /^0/) {
+            $i = "=\"" $i "\"";
+        }
+    }
+
+    gsub(/\r?\n/, "\r");
+    print;
+}
+'
+
 if [ $# -ge 1 ]
 then
     tmp="$(mktemp /tmp/"$(basename "$0")".XXXXXX)"
@@ -23,7 +36,7 @@ then
 
         printf "$BOM" \
             | cat - "$filename" \
-            | cawk '{gsub(/\r?\n/, "\r"); print;}' \
+            | cawk "$FILTER" \
             > "$tmp"
         mv "$tmp" "$filename"
     done
@@ -31,5 +44,5 @@ else
     # Otherwise act as a filter.
     printf "$BOM"
     cat - \
-        | cawk '{gsub(/\r?\n/, "\r"); print;}'
+        | cawk "$FILTER"
 fi
