@@ -2,6 +2,7 @@
 
 import csv
 import os
+import re
 import sys
 import xlsxwriter
 
@@ -72,7 +73,10 @@ if __name__ == '__main__':
             for row in worksheet_reader:
                 cell_index = 0
                 for cell in row:
-                    worksheet.write(row_index, cell_index, cell)
+                    if re.match('[0-9\.]+$', cell) and not re.match('[0-9]{7}$', cell):
+                        worksheet.write_number(row_index, cell_index, float(cell))
+                    else:
+                        worksheet.write(row_index, cell_index, cell)
                     cell_index += 1
                 row_index += 1
 
