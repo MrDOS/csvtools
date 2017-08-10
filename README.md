@@ -45,7 +45,16 @@ to boring old
 CSV when finished.
 So that's what this project is.
 
-## Running
+This project also includes
+some general tools
+for getting CSV data into and out of Excel.
+Excel has its own beliefs
+about how CSVs should work
+which don't necessarily coincide
+with those held
+by the rest of the civilized world.
+
+## The Tools
 
 ### `csvsplit(1)`
 
@@ -86,6 +95,16 @@ as the shebang
 of an executable awk program
 (i.e., `#! /usr/bin/env cawk -f`).
 
+### `csv2xlsx`
+
+Creates an Excel XLSX workbook
+from one or more CSV files.
+Each CSV is imported
+as a separate worksheet.
+
+Requires `python3` and the [XlsxWriter module](https://pypi.python.org/pypi/XlsxWriter)
+(try `pip3 install xlsxwriter`).
+
 ### `csvfix`
 
 Excel for Mac provides two CSV output formats,
@@ -103,6 +122,16 @@ to fix the encoding
 and line endings.
 
 Requires `iconv(1)`, `perl`, and `sed`.
+
+### `excelify`
+
+Make a UTF-8 CSV suitable
+for import into Excel
+by prepending a UTF-8 BOM
+and replacing newlines within fields
+with carriage returns.
+
+Requires `cawk`.
 
 ## Building
 
