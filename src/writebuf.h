@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 
-#define WB_BUF_SIZE 8096
+#define WB_BUF_SIZE 16384
 
 typedef struct
 {
