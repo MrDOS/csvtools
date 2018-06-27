@@ -59,7 +59,7 @@ int main()
             {
                 state = STATE_NORMAL;
             }
-            /* We're out of the quote. Fall through to the default handler. */
+            /* Fallthrough. */
         default:
             if (in == IN_SPLIT)
             {

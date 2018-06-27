@@ -1,6 +1,5 @@
 CFLAGS := -Os -std=gnu99
-debug: CFLAGS := -Wall -Wextra -Werror -pedantic -pedantic-errors \
-                 -Wimplicit-fallthrough=2 -std=gnu99 -g
+debug: CFLAGS := -Wall -Wextra -Werror -pedantic -pedantic-errors -std=gnu99 -g
 
 all: csvsplit csvjoin
 debug: csvsplit csvjoin
