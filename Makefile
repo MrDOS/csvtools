@@ -1,5 +1,6 @@
 CFLAGS := -Os -std=gnu99
-debug: CFLAGS := -Wall -Wextra -Werror -pedantic -std=gnu99 -g
+debug: CFLAGS := -Wall -Wextra -Werror -pedantic -pedantic-errors \
+                 -Wimplicit-fallthrough=2 -std=gnu99 -g
 
 all: csvsplit csvjoin
 debug: csvsplit csvjoin
@@ -33,4 +34,4 @@ test-%: csvsplit csvjoin
 
 .PHONY: clean
 clean:
-	-rm csvsplit csvjoin obj/*.o
+	rm -f csvsplit csvjoin obj/*.o
